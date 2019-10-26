@@ -8,7 +8,7 @@
 		_IntDigits("Int Digits", float) = 2
 		_DecimalDigits("Decimal Digits", float) = 3
 		//_Test("Test", Range(0,10)) = 0
-		[Enum(UnityEngine.Rendering.CullMode)] _Cull("Cull", float) = 1
+		[Enum(UnityEngine.Rendering.CullMode)] _Cull("Cull", float) = 0
 	}
 	SubShader
 	{
