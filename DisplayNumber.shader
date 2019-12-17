@@ -7,7 +7,7 @@
 		_Index ("Index", float) = 0
 		_IntDigits("Int Digits", float) = 2
 		_DecimalDigits("Decimal Digits", float) = 3
-		//_Test("Test", Range(0,10)) = 0
+		_Test("Test", Range(-100,100)) = 0
 		[Enum(UnityEngine.Rendering.CullMode)] _Cull("Cull", float) = 0
 	}
 	SubShader
@@ -71,8 +71,7 @@
 
 				//数字表示
 				//float4 objPos = mul ( unity_ObjectToWorld, float4(0, 0, 0, 1));
-				//float minusCheck = renderTex.x;
-				float minusCheck = _Time.y; //表示する数値
+				float minusCheck = _Test; //表示する数値
 				float numVal = abs(minusCheck);
 	
 
