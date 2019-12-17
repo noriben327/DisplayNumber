@@ -1,18 +1,18 @@
-﻿Shader "Noriben/DisplayNumber"
+Shader "Noriben/DisplayNumber"
 {
 	Properties
 	{
 		_NumTex ("NumTex", 2D) = "white" {}
 		_RenderTex ("RenderTex", 2D) = "white" {}
 		_Index ("Index", float) = 0
-		_IntDigits("Int Digits", float) = 2
-		_DecimalDigits("Decimal Digits", float) = 3
+		_IntDigits("Int Digits", int) = 2
+		_DecimalDigits("Decimal Digits", int) = 3
 		_Test("Test", Range(-100,100)) = 0
 		[Enum(UnityEngine.Rendering.CullMode)] _Cull("Cull", float) = 0
 	}
 	SubShader
 	{
-		Tags { "RenderType"="TransparentCutout" "Queue" = "AlphaTest"}
+		Tags { "RenderType"="TransparentCutout" "Queue" = "AlphaTest" "DisableBatching" = "True"}
 		LOD 100
 
 		Pass
@@ -42,8 +42,8 @@
 			sampler2D _RenderTex;
 			float _Test;
 			float _Index;
-			float _IntDigits;
-			float _DecimalDigits;
+			int _IntDigits;
+			int _DecimalDigits;
 			
 			v2f vert (appdata v)
 			{
@@ -71,7 +71,9 @@
 
 				//数字表示
 				//float4 objPos = mul ( unity_ObjectToWorld, float4(0, 0, 0, 1));
-				float minusCheck = _Test; //表示する数値
+				//float minusCheck = renderTex.x;
+				float minusCheck = _Test;
+				//float minusCheck = -_Time.y; //表示する数値
 				float numVal = abs(minusCheck);
 	
 
@@ -80,10 +82,11 @@
 				float2 uv = i.uv;
 				
 				//1未満
-				for(float j = 0; j < _DecimalDigits; j++)
+				int j = 0;
+				for(j = 0; j < _DecimalDigits; j++)
 				{
 					multi = pow(10, j); 
-					val = numVal + 0.000001;//おまじない
+					val = numVal + 0.00001;//おまじない
 					com = val * multi;
 					val = frac(com) * 10;
 					val = floor(val) * 0.1;
@@ -95,9 +98,9 @@
 				}
 				
 				//1以上
-				for(float k = 1; k < _IntDigits + 1; k++)
+				for(j = 1; j < _IntDigits + 1; j++)
 				{
-					multi = pow(10, k); 
+					multi = pow(10, j); 
 					val = numVal;
 					com = val * 1 / multi;
 					val = frac(com) * 10;
@@ -105,7 +108,7 @@
 
 					uv = i.uv;
 					uv.y += val;
-					uv.x += -0.04 + 0.05 * k; 
+					uv.x += -0.04 + 0.05 * j; 
 					numCol =  numCol + tex2D(_NumTex, uv);
 				}
 
